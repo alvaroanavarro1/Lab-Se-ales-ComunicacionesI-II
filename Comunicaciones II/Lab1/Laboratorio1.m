@@ -1,6 +1,6 @@
 % Laboratorio 1
 % ALvaro Navarro 13-10968
-% Eugenio 
+% Eugenio Martinez 13-10842
 
 clear all
 close all
@@ -41,47 +41,36 @@ A2 = 1;
 [t6,x6,fs6] = UNRZ(N3, rb2, A2);
 
 % 6 bits
-X4 = fftshift(fft(x4));
-MX4=abs(X4);
-L1 = length(MX4);
-MX4=MX4/L1;
-Sx4 = (MX4.*conj(MX4));
-f4=-fs4/2:fs4/L1:fs4/2-fs4/L1; 
+[X4,F4] = pwelch(x4,1000,500,500000,'twosided');
+X4 = fftshift(X4);
 
 % 50 bits
-X5 = fftshift(fft(x5));
-MX5=abs(X5);
-L2 = length(MX5);
-MX5=MX5/L2;
-Sx5 = (MX5.*conj(MX5));
-f5=-fs5/2:fs5/L2:fs5/2-fs5/L2; 
+[X5,F5] = pwelch(x5,1000,500,500000,'twosided');
+X5 = fftshift(X5);
 
 % 1000 bits
-X6 = fftshift(fft(x6));
-MX6=abs(X6);
-L3 = length(MX6);
-MX6=MX6/L3;
-Sx6 = (MX6.*conj(MX6));
-f6=-fs6/2:fs6/L3:fs6/2-fs6/L3; 
+[X6,F6] = (pwelch(x6,1000,500,500000,'twosided'));
+X6 = fftshift(X6);
 
 figure
 subplot (2,2,1)
-plot(f4,Sx4,'r');
-%axis([0 100 0 20])
+plot(F4,X4,'r');
 xlabel('Frecuencia')
-title('Densidad espectral 6bits ---')
+ylabel('Amplitud')
+title('Densidad espectral 6bits-NRZ Unipolar')
 
 subplot (2,2,2)
-plot(f5,Sx5,'g');
-%axis([0 100 0 20])
+plot(F5,X5,'g');
 xlabel('Frecuencia')
-title('Densidad espectral 50bits')
+ylabel('Amplitud')
+title('Densidad espectral 50bits-NRZ Unipolar')
 
 subplot (2,2,3)
-plot(f6,Sx6,'b');
-%axis([0 100 0 20])
+plot(F6,X6,'b');
 xlabel('Frecuencia')
-title('Densidad espectral 1000bits')
+ylabel('Amplitud')
+title('Densidad espectral 1000bits-NRZ Unipolar')
+
 
 % %4)Grafique en una misma figura la DEP de los tres casos estudiados usando una secuencia
 % de entrada de 1000 bits.
@@ -89,49 +78,45 @@ title('Densidad espectral 1000bits')
 [t7,x7,fs7] = NRZpolar(N3, rb2, A2);
 [t8,x8,fs8] = Manchester(N3, rb2, A2);
 
-X7 = fftshift(fft(x7));
-MX7=abs(X7);
-L4 = length(MX7);
-MX7=MX7/L4;
-Sx7 = (MX7.*conj(MX7));
-f7=-fs7/2:fs7/L4:fs7/2-fs7/L4; 
+[X7,F7] = pwelch(x7,1000,500,500000,'twosided');
+X7 = fftshift(X7);
 
-X8 = fftshift(fft(x8));
-MX8=abs(X8);
-L5 = length(MX8);
-MX8=MX8/L5;
-Sx8 = (MX8.*conj(MX8));
-f8=-fs8/2:fs8/L5:fs8/2-fs8/L5; 
+[X8,F8] = pwelch(x8,1000,500,500000,'twosided');
+X8 = fftshift(X8);
 
 figure
 subplot (2,2,1)
-plot(f6,Sx6,'r');
-%axis([0 100 0 20])
+plot(F6,X6,'r');
 xlabel('Frecuencia')
+ylabel('Amplitud')
 title('Densidad espectral NRZ unipolar 1000 bits')
 
 subplot (2,2,2)
-plot(f7,Sx7,'g');
-%axis([0 100 0 20])
+plot(F7,X7,'g');
 xlabel('Frecuencia')
+ylabel('Amplitud')
 title('Densidad espectral NRZ polar 1000 bits')
 
 subplot (2,2,3)
-plot(f8,Sx8,'b');
-%axis([0 100 0 20])
+plot(F8,X8,'b');
 xlabel('Frecuencia')
+ylabel('Amplitud')
 title('Densidad espectral Manchester 1000 bits')
 
 figure
 hold on
-plot(f4,Sx4,'r');
-plot(f5,Sx5,'g');
-plot(f6,Sx6,'b');
+plot(F4,X4,'r');
+plot(F5,X5,'g');
+plot(F6,X6,'b');
+xlabel('Frecuencia')
+ylabel('Amplitud')
 title('Densidad espectral UNRZ (red = 6bits, green = 50bits, blue=1000bits)')
 
 figure
 hold on
-plot(f6,Sx6,'r');
-plot(f7,Sx7,'g');
-plot(f8,Sx8,'b');
+plot(F6,X6,'r');
+plot(F7,X7,'g');
+plot(F8,X8,'b');
+xlabel('Frecuencia')
+ylabel('Amplitud')
 title('Densidad espectral 1000 bits (red = UNRZ, green = PNRZ, blue=Manchester)')
